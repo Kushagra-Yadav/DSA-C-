@@ -1,0 +1,54 @@
+int merge(vector<int>&a,int l,int mid,int r)
+{
+    int n1=mid-l+1;
+    int n2=r-mid;int ans=0;
+    int a1[n1];int a2[n2];
+    for(int i=0;i<n1;i++)
+    {
+        a1[i]=a[l+i];
+    }
+    for(int j=0;j<n2;j++)
+    {
+        a2[j]=a[mid+1+j];
+    }
+    int i=0;int j=0;int k=l;
+    while(i<n1 && j<n2)
+    {
+        if(a1[i]<=a2[j])
+        {
+            a[k]=a1[i];
+            k++;i++;
+
+        }
+        else
+        {
+            ans+=n1-i;
+            a[k]=a2[j];
+            k++;j++;
+        }
+    }
+    while(i<n1)
+    {
+        a[k++]=a1[i++];
+    }
+    while(j<n2)
+    {
+        a[k++]=a2[j++];
+    }
+    return ans;
+}
+int mergeSort(vector<int>&a,int l,int r)
+{
+    int ans=0;
+   if(l<r)
+   {
+       int mid=(l+r)/2;
+       ans+=mergeSort(a,l,mid);
+       ans+=mergeSort(a,mid+1,r);
+       ans+=merge(a,l,mid,r);
+   }
+   return ans;
+}
+int numberOfInversions(vector<int>&a, int n) {
+    return mergeSort(a,0,n-1);// Write your code here.
+}

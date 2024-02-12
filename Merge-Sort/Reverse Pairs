@@ -1,0 +1,58 @@
+class Solution {
+public:
+    int merge(int l,int m,int h,vector<int>&nums)
+    {
+       int x[m-l+1];
+       int y[h-m];
+       for(int i=l;i<=m;i++)
+       x[i-l]=nums[i];
+       for(int i=m+1;i<=h;i++)
+       y[i-(m+1)]=nums[i];
+       int ans=0;
+       int j=m+1;
+       for(int i=l;i<=m;i++)
+       {
+           while(j<=h && nums[i]> 2LL *nums[j])
+           {
+               j++;
+           }
+           ans+=j-(m+1);
+       }
+       int v=l,p=0,q=0;
+        while(p<(m-l+1) && q<(h-m))
+        {
+            if(x[p]<=y[q])
+            {
+                nums[v++]=x[p++];
+            }
+            else
+            {
+                nums[v++]=y[q++];
+            }
+        }
+        while(p<(m-l+1))
+        {
+            nums[v++]=x[p++];
+        }
+        while(q<(h-m))
+        {
+            nums[v++]=y[q++];
+        }
+       return ans;
+    }
+    int mergeSort(int l,int h,vector<int>&nums)
+    {
+        int ans=0;
+        if(l<h)
+        {
+        int mid=(l+h)/2;
+          ans+=mergeSort(l,mid,nums);
+          ans+=mergeSort(mid+1,h,nums);
+          ans+=merge(l,mid,h,nums);
+        }
+        return ans;
+    }
+    int reversePairs(vector<int>& nums) {
+        return mergeSort(0,nums.size()-1,nums);
+    }
+};
